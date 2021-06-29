@@ -1,22 +1,15 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import authContext from "../../store";
 
-class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
+const Dashboard = () => {
+  const [promos, setPromos] = useState([]);
+  const [error, setError] = useState(false);
 
-    this.state = {
-      error: null,
-    };
-  }
+  const checkAuth = useContext(authContext);
 
-  render() {
-    return (
-      <>
-        {this.state.error && <p>{this.state.error}</p>}
-        <h1>Welcome !</h1>
-      </>
-    );
-  }
-}
+  return(
+    <h1>welcome to the jungle !</h1>
+  )
+};
 
 export default Dashboard;

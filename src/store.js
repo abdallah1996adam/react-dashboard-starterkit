@@ -1,10 +1,20 @@
-// Todo ->
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
 
 const authContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const token = localStorage.getItem("token");
+  const userToken = localStorage.getItem("token");
 
-  const [isAuth, setisAuth] = useState(token ? true : false);
+  const [isAuth, setIsAuth] = useState(userToken ? true : false);
+  const [token, setToken] = useState(userToken ? userToken : null);
+
+  return (
+    <authContext.Provider value={{ isAuth, setIsAuth, token, setToken }}>
+      {children}
+    </authContext.Provider>
+  );
 };
+
+export { AuthProvider };
+
+export default authContext;

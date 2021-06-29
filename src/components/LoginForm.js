@@ -1,25 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router";
 import { Button, TextField } from "@material-ui/core";
-import { login } from "../services";
 import useStyles from "../theme/forms.css";
+import { login } from "../services";
+import authContext from "../store";
 
-const LoginForm = (props) => {
+const LoginForm = () => {
+  
+  const checkAuth = useContext(authContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const history = useHistory();
 
   const handleClick = async (e) => {
-    const response = await login(username, password);
-    localStorage.setItem("token", response.data.token);
-    history.push('/Dashboard')
+    try {
+      const response = await login(username, password);
+      localStorage.setItem("token", response.data.token);
+      checkAuth.setToken(response.data.token);
+      checkAuth.setIsAuth(true);
+      history.push("/Dashboard");
+    } catch (error) {
+      setError(true);
+    }
   };
 
   const classes = useStyles();
 
   return (
     <div>
+      {error && "server error"}
       <div>
         <div className={`wrapper ${classes.loginForm}`}>
           <TextField
